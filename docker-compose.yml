@@ -1,0 +1,20 @@
+services:
+  backend:
+    build: .
+    container_name: game24_backend
+    restart: unless-stopped
+    volumes:
+      # 将数据库文件挂载到宿主机，防止容器销毁数据丢失
+      - ./data:/app/data
+    environment:
+      # 指定数据库存放到挂载的目录中
+      - DB_FILE=/app/data/game.db
+
+  frontend:
+    build: ./frontend
+    container_name: game24_frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二十四点 · 经典益智</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<header class="topbar">
+    <div class="brand">二十四点</div>
+
+    <nav class="tabs">
+        <button class="tab active" data-view="game">🎮 游戏</button>
+        <button class="tab" data-view="leaderboard">🏆 排行榜</button>
+    </nav>
+
+    <div class="user-area" id="userArea">
+        <!-- JS 动态填充 -->
+    </div>
+</header>
+
+<!-- 主内容区 -->
+<main>
+
+    <!-- 视图：游戏 -->
+    <section class="view active" id="view-game">
+        <div class="game-container">
+
+            <div class="subhead">用 + - × ÷ 和括号 得到 24</div>
+
+            <div class="cards-panel" id="cardsPanel">
+                <div class="card" id="card0">?</div>
+                <div class="card" id="card1">?</div>
+                <div class="card" id="card2">?</div>
+                <div class="card" id="card3">?</div>
+            </div>
+
+            <div class="input-area">
+                <label for="expression">表达式</label>
+                <input type="text" id="expression" placeholder="例: (3+4)*(5-2)" autocomplete="off" spellcheck="false">
+            </div>
+
+            <div class="button-group">
+                <button class="primary-btn" id="submitBtn">✓ 验证答案</button>
+                <button class="secondary-btn" id="newGameBtn">⟳ 新一局</button>
+                <button class="secondary-btn" id="clearBtn">✕ 清空</button>
+            </div>
+
+            <div class="message" id="message">点击「新一局」开始挑战</div>
+
+            <div class="footer">
+                <span class="timer" id="timerDisplay">⏱ 0 s</span>
+                <span class="solutions-hint" id="solutionsHint">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="statusText">检查后端中...</span>
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 视图：排行榜（5.3b-2 会填内容） -->
+    <section class="view" id="view-leaderboard">
+        <div class="leaderboard-container">
+    
+            <div class="lb-header">
+                <h2 class="lb-title">🏆 排行榜</h2>
+                <div class="lb-subtabs">
+                    <button class="lb-tab active" data-board="fastest">⚡ 最快</button>
+                    <button class="lb-tab" data-board="most-solved">🎯 解题数</button>
+                    <button class="lb-tab" data-board="accuracy">📊 正确率</button>
+                </div>
+            </div>
+    
+            <!-- 我的排名（登录后显示） -->
+            <div class="my-rank" id="myRank" style="display:none;"></div>
+    
+            <!-- 榜单内容 -->
+            <div class="lb-content" id="lbContent">
+                <div class="lb-loading">加载中...</div>
+            </div>
+    
+        </div>
+    </section>
+</main>
+
+<!-- 登录/注册弹窗 -->
+<div class="modal-mask" id="authModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-tabs">
+                <button class="modal-tab active" data-mode="login">登录</button>
+                <button class="modal-tab" data-mode="register">注册</button>
+            </div>
+            <button class="modal-close" id="authClose">×</button>
+        </div>
+        <div class="modal-body">
+            <input type="text" id="authUsername" placeholder="用户名（2~32位字母数字）" autocomplete="username">
+            <input type="password" id="authPassword" placeholder="密码（至少6位）" autocomplete="current-password">
+            <div class="modal-error" id="authError"></div>
+            <button class="primary-btn modal-submit" id="authSubmit">登录</button>
+        </div>
+    </div>
+</div>
+
+<!-- 脚本（注意顺序：api → auth → game → app） -->
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/game.js"></script>
+<script src="js/leaderboard.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
