@@ -5,11 +5,10 @@
 
 // 如果当前访问的是 localhost:5500 (本地开发)，走 8000 端口
 // 如果访问的是 8080 (Docker Nginx)，走 /api 相对路径
-const API_BASE = (window.location.port === '5500' || window.location.port === '')
-    ? 'http://127.0.0.1:8000' 
-    : (window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1'))
-        ? '/api'
-        : 'https://twenty-four-point-game.onrender.com';
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? (window.location.port === '8080' ? '/api' : 'http://127.0.0.1:8000')
+    : 'https://twenty-four-point-game.onrender.com';
+
 
 /* ---------- 内部工具：给请求自动加 Authorization 头 ---------- */
 function withAuth(headers = {}) {
