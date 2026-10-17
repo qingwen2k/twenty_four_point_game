@@ -353,7 +353,7 @@ def on_startup():
 # ============================================================
 # 接口：基础 & 游戏
 # ============================================================
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 def root(session: Session = Depends(get_session)):
     game_count = len(session.exec(select(Game)).all())
     sub_count = len(session.exec(select(Submission)).all())
