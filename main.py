@@ -654,5 +654,29 @@ def my_stats(
         average_seconds=round(sum(elapsed_list) / len(elapsed_list), 2) if elapsed_list else None,
     )
 
+from pydantic import BaseModel
+from fastapi import Header
+
+class AdminResetRequest(BaseModel):
+    password: str
+
+@app.post("/admin/reset-db")
+def admin_reset_db(req: AdminResetRequest, session: Session = Depends(get_session)):
+    """危险操作：清空数据库所有数据（用于测试环境重置）"""
+    # 设置一个只有你知道的清理密码
+    ADMIN_PASSWORD = "reset-me-please" 
+    
+    if req.password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=403, detail="密码错误，无权操作")
+    
+    # 清空所有表的数据（保留表结构）
+    from sqlmodel import delete
+    session.exec(delete(Submission))
+    session.exec(delete(Game))
+    session.exec(delete(User))
+    session.commit()
+    
+    return {"message": "🎉 数据库已清空，所有测试数据已删除！"}
+
 # 启动方式：uvicorn main:app --reload
 
