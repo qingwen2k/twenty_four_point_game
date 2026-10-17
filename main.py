@@ -678,5 +678,29 @@ def admin_reset_db(req: AdminResetRequest, session: Session = Depends(get_sessio
     
     return {"message": "🎉 数据库已清空，所有测试数据已删除！"}
 
+@app.get("/my-games")
+def my_games(
+    session: Session = Depends(get_session),
+    current_user: User | None = Depends(get_current_user_optional),
+):
+    if current_user is None:
+        raise HTTPException(status_code=401, detail="请先登录")
+    
+    # 查出所有属于该用户的局，按时间倒序排列
+    games = session.exec(
+        select(Game).where(Game.user_id == current_user.id).order_by(Game.created_at.desc())
+    ).all()
+    
+    return [
+        {
+            "game_id": g.game_id,
+            "numbers": g.numbers,
+            "status": g.status,
+            "created_at": g.created_at,
+            "elapsed": g.elapsed,
+        }
+        for g in games
+    ]
+
 # 启动方式：uvicorn main:app --reload
 
