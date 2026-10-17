@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+mkdir -p /app/data
+
 echo "⏳ 正在执行数据库迁移..."
 alembic upgrade head
 
